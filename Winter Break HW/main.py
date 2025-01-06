@@ -58,6 +58,8 @@ def main():
     # Here, I start the camera and video stream.
     camera = cv2.VideoCapture(0)
 
+
+
     while True:
         ret, frame = camera.read()
         if not ret:
@@ -112,6 +114,10 @@ def main():
 
         # Here I display the frame, indicating the dimensions to be that of the final frame (ROI only)
         cv2.imshow('Lane Detection', final_frame)
+
+        # Here, I make it so that I can quit the application by pressing the 'q' key.
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
 if __name__ == "__main__":
     main()
