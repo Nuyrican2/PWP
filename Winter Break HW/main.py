@@ -21,17 +21,14 @@ def filter_lines(lines, threshold=100):
 def calculate_slope(line):
     x1, y1, x2, y2 = line
     # If the slope is vertical, it returns 'inf' standing for infinite, since there would otherwise be a divide by 0 error.
-    if x2 - x1 == 0:  
+    if x2 - x1 == 0: 
         return float('inf')
     return (y2 - y1) / (x2 - x1)
 
 # I created this midpoint function to be used later in other parts of the program.
 def get_midpoint(line):
-
     x1, y1, x2, y2 = line
-    return (x1 + x2) / 2
-
-
+    return ((x1 + x2) / 2, (y1 + y2) / 2)
 
 def draw_centerline(frame, lines):
     # If there are less than two lines, nothing takes place.
@@ -39,15 +36,15 @@ def draw_centerline(frame, lines):
         return
 
     # Here, I sorted lines by x-coordinate of the midpoints using the get_midpoint function.
-    lines.sort(key=get_midpoint)
+    lines.sort(key=lambda line: get_midpoint(line)[0])
     line1, line2 = lines[:2]
 
-    # I calculate the slopes of the lines here.
+    # Here, I sorted lines by x-coordinate of the midpoints using the get_midpoint function.
     slope1 = calculate_slope(line1)
     slope2 = calculate_slope(line2)
 
     # Here, I'm doing some basic error blocking, so that when the center line is drawn, it is either drawn horizontally or vertically.
-    if abs(slope1) < 1.5:  # If the absolute value of the slope is less than 1.5 (Slightly greater than diagonal), then I will assume it's being held horizontally.
+    if abs(slope1) < 1.5 and abs(slope2) < 1.5:  # If the absolute value of the slope is less than 1.5 (Slightly greater than diagonal), then I will assume it's being held horizontally.
         y_center = int((line1[1] + line1[3] + line2[1] + line2[3]) / 4)
         cv2.line(frame, (0, y_center), (frame.shape[1], y_center), (0, 0, 255), 2)
     else:  # Otherwise, I can assume the lines are vertical.
@@ -58,18 +55,16 @@ def main():
     # Here, I start the camera and video stream.
     camera = cv2.VideoCapture(0)
 
-
-
     while True:
         ret, frame = camera.read()
         if not ret:
             break
 
-        # The first step in creating the region of interest (ROI) is determing the dimensions of the frame, which I do here.
+        # The first stpe in creating the region of interest (ROI) is determining the dimensions of the frame, which I do here.
         height, width = frame.shape[:2]
 
         # Here, I define the size of the ROI, to be half of the length of the minimum of the width or height of the frame.
-        roi_size = min(width, height) // 2   
+        roi_size = min(width, height) // 2
         x = (width - roi_size) // 2  # Here, I define the x-coordinate for the square to be in the middle.
         y = (height - roi_size) // 2  # I do the same for the y-coordinate here as well.
 
