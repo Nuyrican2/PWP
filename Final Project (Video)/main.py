@@ -1,3 +1,30 @@
+###########################################################################################################
+# -----------------------------------------     Version 1.3     ----------------------------------------- #
+# Functions:                                                                                              #
+# create_db(): Creates an SQLite database for storing user credentials. No parameters. No return value.   #
+# LoginWindow: Manages the login window.                                                                  #
+#     __init__(root: tk.Tk, video_path: str): Initializes the login window.                               #
+#     create_widgets(): Creates login UI elements.                                                        #
+#     login(): Validates user credentials. No parameters. No return value.                                #
+#     open_create_account(): Opens account creation window. No parameters. No return value.               #
+#     open_video_window(username: str): Opens lane detection app for a logged-in user.                    #
+# CreateAccountWindow: Handles account creation.                                                          #
+#     __init__(root: tk.Tk, login_window: LoginWindow): Initializes account creation window.              #
+#     create_widgets(): Creates account creation UI elements.                                             #
+#     create_account(): Validates and stores new user credentials.                                        #
+# LaneDetectionApp: Processes video feed for lane detection.                                              #
+#     __init__(root: tk.Tk, video_path: str, username: str): Initializes the lane detection GUI.          #
+#     process_frame(self, frame): Processes the input video frame for display                             #
+#     lane_detection(self, frame): Performs lane detection on the input frame                             #
+#         average_lane(lines, prev_fit): Averages lane lines to maintain smooth lane tracking.            #
+#         draw_lane_line(img, fit, color): Draws a lane line on the image overaly feed.                   #
+#             rotate_image(image: ndarray, angle: float): Rotates the compass rose by the proper angle.   #
+#     update_frame(): Updates the frames to the Tkinter GUI. No parameters. No return value.              #
+#     start_video(): Starts the video processing and frame update loop. No parameters. No return value.   #
+#     stop_video(): Stops the video processing and frame update loop. No parameters. No return value.     #
+#     button_action(direction: str): Handles button presses for play, stop, and updates them in the log.  #
+###########################################################################################################
+
 import cv2
 import numpy as np
 import tkinter as tk
